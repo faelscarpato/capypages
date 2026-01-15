@@ -7,6 +7,7 @@ import Works from './components/Works';
 import Process from './components/Process';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +61,9 @@ const App: React.FC = () => {
           
           {/* Seção 4: Contato */}
           <Contact />
+          
+          {/* Back to Top Button */}
+          <BackToTop />
           
           <Footer />
           
