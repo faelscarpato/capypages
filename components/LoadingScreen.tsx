@@ -58,59 +58,18 @@ const LoadingScreen: React.FC = () => {
         filter: "blur(10px)",
         transition: { duration: 0.5, ease: "easeOut" }
       }}
-      className="fixed inset-0 z-[100] bg-midnight flex items-center justify-center overflow-hidden font-display"
+      className="fixed inset-0 z-[100] bg-midnight flex items-center justify-center overflow-hidden font-display px-4"
     >
-      <div className="relative flex items-center justify-center">
-        
-        {/* The Orange Dot */}
-        <motion.div
-          layout
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ 
-            scale: 1, 
-            opacity: 1,
-            x: phase === 'LOGO' ? 140 : 0 // Slide right for the logo phase
-          }}
-          transition={{ 
-            type: 'spring', 
-            stiffness: 100, 
-            damping: 20,
-            x: { duration: 0.8, ease: "easeInOut" }
-          }}
-          className="w-4 h-4 md:w-6 md:h-6 bg-primary rounded-full shadow-[0_0_20px_rgba(240,112,0,0.6)] z-50"
-        />
-
-        {/* Word Loop Phase */}
-        <div className="absolute left-full ml-4 whitespace-nowrap">
-          <AnimatePresence mode="wait">
-            {phase === 'WORDS' && currentWordIndex < words.length && (
-              <motion.div
-                key={words[currentWordIndex]}
-                variants={sentence}
-                initial="hidden"
-                animate="visible"
-                exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                className="text-3xl md:text-5xl font-light text-white tracking-tight"
-              >
-                {words[currentWordIndex].split("").map((char, index) => (
-                  <motion.span key={char + "-" + index} variants={letter}>
-                    {char}
-                  </motion.span>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Final Logo Phase */}
-        <div className="absolute right-full mr-[-130px] whitespace-nowrap">
+      <div className="relative flex items-center justify-center w-full max-w-full">
+        <div className="flex items-center gap-3 md:gap-6">
+          {/* Final Logo Phase (Left side of dot) */}
           <AnimatePresence>
             {phase === 'LOGO' && (
               <motion.div
                 variants={sentence}
                 initial="hidden"
                 animate="visible"
-                className="text-5xl md:text-7xl font-light text-white tracking-tighter"
+                className="text-4xl sm:text-5xl md:text-7xl font-light text-white tracking-tighter"
               >
                 {"Scarpato".split("").map((char, index) => (
                   <motion.span key={char + "-" + index} variants={letter}>
@@ -120,8 +79,38 @@ const LoadingScreen: React.FC = () => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
 
+          {/* The Orange Dot */}
+          <motion.div
+            layout
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+            className="flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 bg-primary rounded-full shadow-[0_0_20px_rgba(240,112,0,0.6)] z-50"
+          />
+
+          {/* Word Loop Phase (Right side of dot) */}
+          <div className="min-w-[120px] sm:min-w-[200px] md:min-w-[300px]">
+            <AnimatePresence mode="wait">
+              {phase === 'WORDS' && currentWordIndex < words.length && (
+                <motion.div
+                  key={words[currentWordIndex]}
+                  variants={sentence}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  className="text-2xl sm:text-3xl md:text-5xl font-light text-white tracking-tight"
+                >
+                  {words[currentWordIndex].split("").map((char, index) => (
+                    <motion.span key={char + "-" + index} variants={letter}>
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* Subtle Background Elements */}

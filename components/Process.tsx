@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from 'motion/react';
 
 const Process: React.FC = () => {
   const steps = [
@@ -40,19 +41,32 @@ const Process: React.FC = () => {
       </div>
 
       <div className="container mx-auto relative z-10 max-w-6xl">
-        <div className="reveal reveal-up text-center mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
           <h2 className="text-teal-accent text-xs font-bold uppercase tracking-[0.4em] mb-4">Workflow</h2>
           <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">Metodologia Digital</h3>
           <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed font-body">
             Um processo ágil e modular projetado para transformar conceitos brutos em interfaces de alto desempenho.
           </p>
-        </div>
+        </motion.div>
 
         <div className="relative grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-4">
           <div className="hidden md:block absolute top-12 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0"></div>
           
           {steps.map((step, idx) => (
-            <div key={step.number} className={`reveal reveal-up stagger-${idx + 1} relative flex flex-col items-center text-center group`}>
+            <motion.div 
+              key={step.number} 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className="relative flex flex-col items-center text-center group"
+            >
               <div className="relative z-10 w-24 h-24 rounded-2xl glass-card flex items-center justify-center mb-6 group-hover:border-primary/50 transition-all duration-500 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
                 <span className={`material-symbols-outlined text-4xl ${step.color} transition-transform group-hover:scale-110 duration-300`}>
                   {step.icon}
@@ -61,7 +75,7 @@ const Process: React.FC = () => {
               </div>
               <h4 className="text-xl font-bold text-white mb-2 font-display">{step.title}</h4>
               <p className="text-white/40 text-sm leading-relaxed px-4 font-body">{step.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

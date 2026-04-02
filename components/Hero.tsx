@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="reveal reveal-up mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-lg shadow-black/20"
+          className="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-lg shadow-black/20"
         >
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -99,10 +99,10 @@ const Hero: React.FC = () => {
         </motion.div>
 
         <motion.h1 
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="reveal reveal-up stagger-1 text-7xl md:text-9xl font-light tracking-tighter text-white mb-6 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-display"
+          className="text-7xl md:text-9xl font-light tracking-tighter text-white mb-6 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-display"
         >
           Scarpato<motion.span 
             initial={{ scale: 0 }}
@@ -116,7 +116,7 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="reveal reveal-up stagger-2 text-lg md:text-2xl font-normal text-white/60 mb-12 max-w-2xl font-body leading-relaxed"
+          className="text-lg md:text-2xl font-normal text-white/60 mb-12 max-w-2xl font-body leading-relaxed"
         >
           Unindo <span className="text-white font-medium">desenvolvimento front-end</span>, design gráfico e fotografia para construir experiências digitais que convertem.
         </motion.p>
@@ -125,7 +125,7 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="reveal reveal-up stagger-3 flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto"
         >
           <a href="#works" className="group relative flex w-full sm:w-auto min-w-[220px] items-center justify-center rounded-full h-16 px-8 bg-primary hover:bg-orange-500 text-white text-base font-bold transition-all shadow-[0_0_25px_rgba(240,112,0,0.4)] active:scale-95">
             <span className="relative z-10 flex items-center gap-2 uppercase tracking-widest text-sm">
@@ -145,7 +145,7 @@ const Hero: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="reveal reveal-up stagger-4 absolute bottom-12 left-0 w-full flex justify-center z-40"
+        className="absolute bottom-12 left-0 w-full flex justify-center z-40"
       >
         <div className="flex flex-col items-center gap-2 opacity-40">
           <span className="text-[10px] text-white uppercase tracking-[0.6em] font-mono font-bold">Scroll to Explore</span>

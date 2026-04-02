@@ -20,30 +20,6 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15
-      };
-
-      const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-          }
-        });
-      };
-
-      const observer = new IntersectionObserver(handleIntersect, observerOptions);
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach(el => observer.observe(el));
-
-      return () => observer.disconnect();
-    }
-  }, [isLoading]);
-
   return (
     <div className="relative min-h-screen bg-midnight overflow-x-hidden">
       <AnimatePresence mode="wait">

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from 'motion/react';
 
 const Contact: React.FC = () => {
   const contactLinks = [
@@ -13,7 +14,13 @@ const Contact: React.FC = () => {
     <section id="contact" className="relative z-20 bg-midnight w-full py-32 px-6 border-t border-white/5">
       <div className="container mx-auto max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-20 items-start">
-          <div className="reveal reveal-left space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-teal-accent/30 bg-teal-accent/10 backdrop-blur-md">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-accent opacity-75"></span>
@@ -41,16 +48,20 @@ const Contact: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {contactLinks.map((link, idx) => (
-              <a 
+              <motion.a 
                 key={link.name} 
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`reveal reveal-right stagger-${idx + 1} group flex flex-col justify-between p-8 rounded-3xl glass-card transition-all duration-300 ${link.color}`}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className={`group flex flex-col justify-between p-8 rounded-3xl glass-card transition-all duration-300 ${link.color}`}
               >
                 <div className="flex justify-between items-start mb-12">
                   <span className={`material-symbols-outlined text-3xl ${link.iconColor} group-hover:scale-110 transition-transform`}>{link.icon}</span>
@@ -60,7 +71,7 @@ const Contact: React.FC = () => {
                   <h4 className="text-xl font-bold text-white mb-1 font-display">{link.name}</h4>
                   <p className="text-[10px] text-white/40 uppercase tracking-widest font-mono">{link.sub}</p>
                 </div>
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>
