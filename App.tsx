@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -15,7 +16,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 4500);
+    }, 5800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -45,35 +46,32 @@ const App: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-midnight overflow-x-hidden">
-      {isLoading ? (
-        <LoadingScreen />
-      ) : (
-        <>
-          <Navbar />
-          {/* Seção 1: Hero */}
-          <Hero />
-          
-          {/* Seção 2: Processo (Metodologia antecede os resultados) */}
-          <Process />
-          
-          {/* Seção 3: Works (Galeria Visual conforme pedido) */}
-          <Works />
-          
-          {/* Seção 4: Contato */}
-          <Contact />
-          
-          {/* Back to Top Button */}
-          <BackToTop />
-          
-          <Footer />
-          
-          {/* Global HUD elements */}
-          <div className="fixed inset-0 pointer-events-none z-[100]">
-            <div className="crt-overlay opacity-[0.05] absolute inset-0"></div>
-            <div className="scanlines opacity-[0.03] absolute inset-0"></div>
-          </div>
-        </>
-      )}
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <LoadingScreen key="loader" />
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            <Navbar />
+            <Hero />
+            <Process />
+            <Works />
+            <Contact />
+            <BackToTop />
+            <Footer />
+            
+            {/* Global HUD elements */}
+            <div className="fixed inset-0 pointer-events-none z-[100]">
+              <div className="crt-overlay opacity-[0.05] absolute inset-0"></div>
+              <div className="scanlines opacity-[0.03] absolute inset-0"></div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

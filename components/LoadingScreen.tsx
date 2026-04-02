@@ -1,106 +1,135 @@
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const LoadingScreen: React.FC = () => {
-  const [step, setStep] = useState(0);
-  const [logs, setLogs] = useState<string[]>([]);
-
-  const bootLogs = [
-    "INITIALIZING SCARPATO CORE...",
-    "HANDSHAKE PROTOCOL: SECURE",
-    "DECRYPTING ASSETS: 2048-BIT",
-    "LOAD_MODULE: NEURAL_ENGINE [OK]",
-    "LOAD_MODULE: VISUAL_RENDERER [OK]",
-    "ESTABLISHING SAT-LINK: UPLINK_STABLE",
-    "BYPASSING FIREWALL: GRANTED",
-    "READY TO LAUNCH..."
-  ];
+  const [phase, setPhase] = useState<'DOT' | 'WORDS' | 'LOGO' | 'DONE'>('DOT');
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const words = ['Design', 'Criatividade', 'SEO', 'Analytics'];
 
   useEffect(() => {
-    let currentLogIndex = 0;
-    const interval = setInterval(() => {
-      if (currentLogIndex < bootLogs.length) {
-        setLogs(prev => [...prev, bootLogs[currentLogIndex]]);
-        setStep(prev => Math.min(prev + 1, 4));
-        currentLogIndex++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 450);
+    // Phase 1: Show Dot
+    const dotTimer = setTimeout(() => {
+      setPhase('WORDS');
+    }, 800);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(dotTimer);
   }, []);
 
+  useEffect(() => {
+    if (phase === 'WORDS') {
+      if (currentWordIndex < words.length) {
+        const wordTimer = setTimeout(() => {
+          setCurrentWordIndex(prev => prev + 1);
+        }, 1000); // Reduced from 1200ms
+        return () => clearTimeout(wordTimer);
+      } else {
+        setPhase('LOGO');
+      }
+    }
+  }, [phase, currentWordIndex]);
+
+  // Typing animation variants
+  const sentence = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.2,
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const letter = {
+    hidden: { opacity: 0, display: 'none' },
+    visible: {
+      opacity: 1,
+      display: 'inline-block',
+    },
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] bg-[#010009] flex items-center justify-center cursor-wait overflow-hidden font-mono">
-      {/* Visual Glitch Overlays */}
-      <div className="absolute inset-0 z-10 pointer-events-none crt-overlay opacity-50"></div>
-      <div className="absolute inset-0 z-10 pointer-events-none animate-monitor-flicker bg-white/5 mix-blend-overlay opacity-10"></div>
-      
-      <div className="relative z-20 w-[90%] max-w-xl">
-        <div className="bg-[#050A14]/90 border border-primary/30 p-6 md:p-8 rounded-sm shadow-[0_0_50px_rgba(240,112,0,0.1)] animate-monitor-flicker">
-          {/* Header Bar */}
-          <div className="flex items-center justify-between mb-8 border-b border-primary/20 pb-4">
-            <div className="flex items-center gap-2">
-              <div className="size-2 rounded-full bg-primary animate-pulse"></div>
-              <span className="text-[10px] text-primary/80 uppercase tracking-[0.2em] font-bold">Terminal Session: S-042</span>
-            </div>
-            <span className="text-[9px] text-white/20 uppercase tracking-widest">Protocol: V.1.0.5</span>
-          </div>
+    <motion.div 
+      initial={{ opacity: 1 }}
+      exit={{ 
+        opacity: 0,
+        scale: 1.05,
+        filter: "blur(10px)",
+        transition: { duration: 0.5, ease: "easeOut" }
+      }}
+      className="fixed inset-0 z-[100] bg-midnight flex items-center justify-center overflow-hidden font-display"
+    >
+      <div className="relative flex items-center justify-center">
+        
+        {/* The Orange Dot */}
+        <motion.div
+          layout
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ 
+            scale: 1, 
+            opacity: 1,
+            x: phase === 'LOGO' ? 140 : 0 // Slide right for the logo phase
+          }}
+          transition={{ 
+            type: 'spring', 
+            stiffness: 100, 
+            damping: 20,
+            x: { duration: 0.8, ease: "easeInOut" }
+          }}
+          className="w-4 h-4 md:w-6 md:h-6 bg-primary rounded-full shadow-[0_0_20px_rgba(240,112,0,0.6)] z-50"
+        />
 
-          {/* Log Stream */}
-          <div className="space-y-1 mb-10 min-h-[160px] overflow-hidden">
-            {logs.map((log, i) => (
-              <div key={i} className="flex gap-4 text-[11px] md:text-xs">
-                <span className="text-white/20">[{new Date().toLocaleTimeString('en-GB', { hour12: false })}]</span>
-                <span className={`${i === logs.length - 1 ? 'text-primary animate-pulse' : 'text-white/60'}`}>
-                  {i === logs.length - 1 ? '> ' : '  '}{log}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress Section */}
-          <div className="space-y-3">
-            <div className="flex justify-between items-end">
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] text-white/40 uppercase tracking-[0.2em]">Sync Status</span>
-                <span className="text-sm text-primary font-bold">
-                  {logs.length === bootLogs.length ? 'SYSTEM READY' : 'ESTABLISHING...'}
-                </span>
-              </div>
-              <span className="text-2xl font-bold text-primary tabular-nums">
-                {Math.floor((logs.length / bootLogs.length) * 100)}%
-              </span>
-            </div>
-            
-            <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-primary relative transition-all duration-300 ease-out shadow-[0_0_10px_rgba(240,112,0,0.5)]"
-                style={{ width: `${(logs.length / bootLogs.length) * 100}%` }}
+        {/* Word Loop Phase */}
+        <div className="absolute left-full ml-4 whitespace-nowrap">
+          <AnimatePresence mode="wait">
+            {phase === 'WORDS' && currentWordIndex < words.length && (
+              <motion.div
+                key={words[currentWordIndex]}
+                variants={sentence}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                className="text-3xl md:text-5xl font-light text-white tracking-tight"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[shimmer_2s_infinite]"></div>
-              </div>
-            </div>
-          </div>
+                {words[currentWordIndex].split("").map((char, index) => (
+                  <motion.span key={char + "-" + index} variants={letter}>
+                    {char}
+                  </motion.span>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Footer info */}
-        <div className="mt-4 flex justify-between px-2 text-[8px] text-white/20 uppercase tracking-[0.3em]">
-          <span>© Scarpato Studio</span>
-          <span>Kernel Build: 4.8.1-RT-AMBER</span>
+        {/* Final Logo Phase */}
+        <div className="absolute right-full mr-[-130px] whitespace-nowrap">
+          <AnimatePresence>
+            {phase === 'LOGO' && (
+              <motion.div
+                variants={sentence}
+                initial="hidden"
+                animate="visible"
+                className="text-5xl md:text-7xl font-light text-white tracking-tighter"
+              >
+                {"Scarpato".split("").map((char, index) => (
+                  <motion.span key={char + "-" + index} variants={letter}>
+                    {char}
+                  </motion.span>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
       </div>
-      
-      {/* Random Data Glitch background */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none text-[8px] break-all leading-none overflow-hidden text-white/50">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div key={i} className="mb-2">
-            {Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)}
-          </div>
-        ))}
+
+      {/* Subtle Background Elements */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="crt-overlay absolute inset-0"></div>
+        <div className="scanlines absolute inset-0"></div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
